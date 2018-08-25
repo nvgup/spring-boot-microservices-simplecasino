@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: simplecasino-game-service-test
+
+eureka:
+  client:
+    enabled: false

@@ -1,0 +1,27 @@
+spring:
+  application:
+     name: game-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27055
+      database: simplecasino-game-service
+
+server:
+  port: ${PORT:0}
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+feign:
+  hystrix:
+    enabled: false
+  client:
+      config:
+        default:
+          connectTimeout: 5000
+          readTimeout: 5000
