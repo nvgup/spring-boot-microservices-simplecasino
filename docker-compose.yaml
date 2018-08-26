@@ -1,44 +1,50 @@
 version: '3'
 services:
   discovery-server:
-    build: discovery-server
+    image: discovery-server
     ports:
-          - "8761:8761"
+      - "8761:8761"
+
   wallet-service:
-    build: wallet-service
-    links:
-      - discovery-server
-      - mysql
+    image: wallet-service
     depends_on:
       - discovery-server
-      - mysql
+      - db-mysql
+
   game-service:
-    build: game-service
-    links:
-      - discovery-server
-    depends_on:
-      - discovery-server
+      image: game-service
+      depends_on:
+        - discovery-server
+        - mongo-db
+
   gateway-service:
-    build: gateway-service
-    links:
-      - game-service
-      - wallet-service
+    image: gateway-service
+    ports:
+      - "9999:9999"
     depends_on:
-      - game-service
-      - wallet-service
-  mongodb:
+      - discovery-server
+
+  db-mysql:
+    image: mysql:latest
+    container_name: db-mysql
+    expose:
+      - 3306
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wallet"
+      MYSQL_USER: "simplecasino"
+      MYSQL_PASSWORD: "simplecasino"
+
+  mongo-db:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo-db
     environment:
       - MONGO_DATA_DIR=/data/db
-    ports:
-      - 27055:27055
-  mysql:
-    image: mysql
-    container_name: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: wallet
-      MYSQL_USER: simplecasino
-      MYSQL_PASSWORD: simplecasino
+    expose:
+      - 27017
+
+volumes:
+  my-datavolume:

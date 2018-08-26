@@ -3,7 +3,7 @@ spring:
      name: wallet-service
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/wallet
+    url: jdbc:mysql://db-mysql:3306/wallet
     username: simplecasino
     password: simplecasino
     hikari:
@@ -28,7 +28,7 @@ server:
 
 eureka:
   client:
-    service-url:
-      default-zone: http://localhost:8761/eureka
+    serviceUrl:
+      defaultZone: ${eureka_url:http://discovery-server:8761/eureka/}
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
