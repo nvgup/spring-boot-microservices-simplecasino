@@ -5,7 +5,7 @@ import com.simplecasino.gameservice.dto.BalanceResponse;
 import com.simplecasino.gameservice.dto.BetResponse;
 import com.simplecasino.gameservice.dto.PlaceBetRequest;
 import com.simplecasino.gameservice.dto.UpdateBalanceRequest;
-import com.simplecasino.gameservice.exception.RestApiException;
+import com.simplecasino.gameservice.exception.GameServiceException;
 import com.simplecasino.gameservice.model.Game;
 import com.simplecasino.gameservice.model.PlayerBet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class GameServiceImpl implements GameService {
 
     private void throwExceptionIfGameExists(Long gameId) {
         if (gameDao.existsById(gameId)) {
-            throw new RestApiException(RestApiException.Type.GAME_ALREADY_EXIST);
+            throw new GameServiceException(GameServiceException.Type.GAME_ALREADY_EXIST);
         }
     }
 
@@ -55,7 +55,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public BalanceResponse placeBet(Long gameId, PlaceBetRequest placeBetRequest) {
         Game game = gameDao.findById(gameId)
-                .orElseThrow(() -> new RestApiException(RestApiException.Type.GAME_NOT_FOUND));
+                .orElseThrow(() -> new GameServiceException(GameServiceException.Type.GAME_NOT_FOUND));
 
         UpdateBalanceRequest updateBalanceRequest = new UpdateBalanceRequest();
         updateBalanceRequest.setBalance(placeBetRequest.getAmount().negate());

@@ -5,7 +5,7 @@ import com.simplecasino.gameservice.dto.BalanceResponse;
 import com.simplecasino.gameservice.dto.BetResponse;
 import com.simplecasino.gameservice.dto.PlaceBetRequest;
 import com.simplecasino.gameservice.dto.UpdateBalanceRequest;
-import com.simplecasino.gameservice.exception.RestApiException;
+import com.simplecasino.gameservice.exception.GameServiceException;
 import com.simplecasino.gameservice.model.Game;
 import com.simplecasino.gameservice.model.PlayerBet;
 import org.junit.Test;
@@ -53,8 +53,8 @@ public class GameServiceImplTest {
         assertEquals(game, returnedGame);
     }
 
-    @Test(expected = RestApiException.class)
-    public void saveGame_ifIdAlreadyExist_thenThrowRestApiExceptionException() {
+    @Test(expected = GameServiceException.class)
+    public void saveGame_ifIdAlreadyExist_thenThrowGameServiceException() {
         when(gameDao.existsById(TEST_ID)).thenReturn(true);
 
         Game game = new Game(TEST_ID);
@@ -99,8 +99,8 @@ public class GameServiceImplTest {
         assertThat(betResponse2.getBets(), containsInAnyOrder(BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO));
     }
 
-    @Test(expected = RestApiException.class)
-    public void placeBet_ifGameNotExist_thenThrowRestApiExceptionException() {
+    @Test(expected = GameServiceException.class)
+    public void placeBet_ifGameNotExist_thenThrowGameServiceException() {
         when(gameDao.findById(TEST_ID)).thenReturn(Optional.empty());
 
         PlaceBetRequest placeBetRequest = new PlaceBetRequest();

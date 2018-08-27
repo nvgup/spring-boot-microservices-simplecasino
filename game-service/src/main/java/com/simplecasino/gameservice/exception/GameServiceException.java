@@ -2,7 +2,7 @@ package com.simplecasino.gameservice.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class RestApiException extends RuntimeException {
+public class GameServiceException extends RuntimeException {
 
     public enum Type {
         GAME_ALREADY_EXIST(HttpStatus.CONFLICT, 40903, "Game already exist"),
@@ -33,11 +33,11 @@ public class RestApiException extends RuntimeException {
 
     private Type type;
 
-    public RestApiException(Type type) {
+    public GameServiceException(Type type) {
         this.type = type;
     }
 
-    public RestApiException(Type type, String message) {
+    public GameServiceException(Type type, String message) {
         super(message);
         this.type = type;
     }

@@ -3,7 +3,7 @@ package com.simplecasino.gameservice.service;
 import com.simplecasino.gameservice.dto.BalanceResponse;
 import com.simplecasino.gameservice.dto.BetResponse;
 import com.simplecasino.gameservice.dto.PlaceBetRequest;
-import com.simplecasino.gameservice.exception.RestApiException;
+import com.simplecasino.gameservice.exception.GameServiceException;
 import com.simplecasino.gameservice.model.Game;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface GameService {
      *
      * @param game - the game to be saved
      * @return the same game, successfully saved to the db
-     * @throws RestApiException in case if the given game already exist
+     * @throws GameServiceException in case if the given game already exist
      */
     Game saveGame(Game game);
 
@@ -35,7 +35,7 @@ public interface GameService {
      * @param gameId          the id of the game in which the player place a bet
      * @param placeBetRequest the request to place the bet
      * @return the new player's balance after placing a bet
-     * @throws RestApiException in case if the game with the given id wasn't found
+     * @throws GameServiceException in case if the game with the given id wasn't found
      */
     BalanceResponse placeBet(Long gameId, PlaceBetRequest placeBetRequest);
 }

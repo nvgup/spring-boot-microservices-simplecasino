@@ -6,7 +6,7 @@ import com.simplecasino.gameservice.dao.GameDao;
 import com.simplecasino.gameservice.dto.AddGameRequest;
 import com.simplecasino.gameservice.dto.BetResponse;
 import com.simplecasino.gameservice.dto.PlaceBetRequest;
-import com.simplecasino.gameservice.exception.RestApiException;
+import com.simplecasino.gameservice.exception.GameServiceException;
 import com.simplecasino.gameservice.model.Game;
 import com.simplecasino.gameservice.model.PlayerBet;
 import org.junit.After;
@@ -87,8 +87,8 @@ public class GameControllerIntegrationTest {
                 .andExpect(status().is(HttpStatus.CONFLICT.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(HttpStatus.CONFLICT.value())))
-                .andExpect(jsonPath("$.message", is(RestApiException.Type.GAME_ALREADY_EXIST.getMessage())))
-                .andExpect(jsonPath("$.code", is(RestApiException.Type.GAME_ALREADY_EXIST.getCode())));
+                .andExpect(jsonPath("$.message", is(GameServiceException.Type.GAME_ALREADY_EXIST.getMessage())))
+                .andExpect(jsonPath("$.code", is(GameServiceException.Type.GAME_ALREADY_EXIST.getCode())));
     }
 
     @Test
@@ -156,8 +156,8 @@ public class GameControllerIntegrationTest {
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", is(RestApiException.Type.GAME_NOT_FOUND.getMessage())))
-                .andExpect(jsonPath("$.code", is(RestApiException.Type.GAME_NOT_FOUND.getCode())));
+                .andExpect(jsonPath("$.message", is(GameServiceException.Type.GAME_NOT_FOUND.getMessage())))
+                .andExpect(jsonPath("$.code", is(GameServiceException.Type.GAME_NOT_FOUND.getCode())));
     }
 
     @Test

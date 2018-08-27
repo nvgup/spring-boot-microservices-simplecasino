@@ -1,6 +1,7 @@
 package com.simplecasino.gameservice.exception;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,11 +11,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {RestApiException.class})
-    protected ResponseEntity<?> handleRestApiException(RestApiException ex, WebRequest webRequest) {
+    @ExceptionHandler(value = {GameServiceException.class})
+    protected ResponseEntity<?> handleGameServiceException(GameServiceException ex, WebRequest webRequest) {
         ApiError apiError = new ApiError(ex.getType());
 
         return handleExceptionInternal(ex, apiError, new HttpHeaders(),
                 ex.getType().getStatus(), webRequest);
+    }
+
+    @ExceptionHandler(value = {ExternalServiceException.class})
+    protected ResponseEntity<?> handleExternalServiceException(ExternalServiceException ex, WebRequest webRequest) {
+        ApiError apiError = ex.getApiError();
+
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(),
+                HttpStatus.resolve(apiError.getStatus()), webRequest);
     }
 }
