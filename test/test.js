@@ -129,7 +129,7 @@ $( document ).ready(function() {
     });
 
     // place bet KO
-    data = {playerId: playerId, amount: 70};
+    data = {playerId: playerId, amount: 50};
     console.log("Place bet. Request:");
     console.log(data);
 
