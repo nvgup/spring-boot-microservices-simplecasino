@@ -2,7 +2,7 @@ package com.simplecasino.walletservice.service;
 
 import com.simplecasino.walletservice.dao.WalletDao;
 import com.simplecasino.walletservice.exception.InsufficientBalanceException;
-import com.simplecasino.walletservice.exception.RestApiException;
+import com.simplecasino.walletservice.exception.WalletServiceException;
 import com.simplecasino.walletservice.model.Balance;
 import com.simplecasino.walletservice.model.Player;
 import org.junit.Test;
@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -42,18 +40,16 @@ public class WalletServiceImplTest {
         assertEquals(player, returnedPlayer);
     }
 
-    @Test(expected = RestApiException.class)
-    public void registerPlayer_ifIdAlreadyExist_thenThrowRestApiExceptionException() {
+    @Test(expected = WalletServiceException.class)
+    public void registerPlayer_ifIdAlreadyExist_thenThrowWalletServiceException() {
         when(walletDao.existsById(TEST_ID)).thenReturn(true);
         walletService.registerPlayer(TEST_ID);
     }
 
-    @Test
-    public void updateBalance_ifPlayerNotFoundById_thenReturnEmptyPlayer() {
+    @Test(expected = WalletServiceException.class)
+    public void updateBalance_ifPlayerNotFoundById_thenThrowWalletServiceException() {
         when(walletDao.findById(TEST_ID)).thenReturn(Optional.empty());
-        Optional<Player> updatedPlayer = walletService.updateBalance(TEST_ID, BigDecimal.ONE);
-
-        assertFalse(updatedPlayer.isPresent());
+        walletService.updateBalance(TEST_ID, BigDecimal.ONE);
     }
 
     @Test
@@ -61,10 +57,9 @@ public class WalletServiceImplTest {
         Player player = new Player(TEST_ID, new Balance());
 
         when(walletDao.findById(TEST_ID)).thenReturn(Optional.of(player));
-        Optional<Player> updatedPlayer = walletService.updateBalance(TEST_ID, BigDecimal.ONE);
+        Player updatedPlayer = walletService.updateBalance(TEST_ID, BigDecimal.ONE);
 
-        assertTrue(updatedPlayer.isPresent());
-        assertEquals(BigDecimal.ONE, player.getBalance().getAmount());
+        assertEquals(BigDecimal.ONE, updatedPlayer.getBalance().getAmount());
     }
 
     @Test
@@ -72,10 +67,9 @@ public class WalletServiceImplTest {
         Player player = new Player(TEST_ID, new Balance(BigDecimal.TEN));
 
         when(walletDao.findById(TEST_ID)).thenReturn(Optional.of(player));
-        Optional<Player> updatedPlayer = walletService.updateBalance(TEST_ID, BigDecimal.valueOf(-4));
+        Player updatedPlayer = walletService.updateBalance(TEST_ID, BigDecimal.valueOf(-4));
 
-        assertTrue(updatedPlayer.isPresent());
-        assertEquals(BigDecimal.valueOf(6), player.getBalance().getAmount());
+        assertEquals(BigDecimal.valueOf(6), updatedPlayer.getBalance().getAmount());
     }
 
     @Test(expected = InsufficientBalanceException.class)
@@ -86,12 +80,10 @@ public class WalletServiceImplTest {
         walletService.updateBalance(TEST_ID, BigDecimal.valueOf(-4));
     }
 
-    @Test
-    public void findById_ifPlayerNotFoundById_thenReturnEmptyPlayer() {
+    @Test(expected = WalletServiceException.class)
+    public void findById_ifPlayerNotFoundById_thenThrowWalletServiceException() {
         when(walletDao.findById(TEST_ID)).thenReturn(Optional.empty());
-        Optional<Player> returnedPlayer = walletService.findById(TEST_ID);
-
-        assertFalse(returnedPlayer.isPresent());
+        walletService.findById(TEST_ID);
     }
 
     @Test
@@ -99,8 +91,7 @@ public class WalletServiceImplTest {
         Player player = new Player(TEST_ID, new Balance(BigDecimal.ONE));
         when(walletDao.findById(TEST_ID)).thenReturn(Optional.of(player));
 
-        Optional<Player> returnedPlayer = walletService.findById(TEST_ID);
-
-        assertEquals(player, returnedPlayer.get());
+        Player returnedPlayer = walletService.findById(TEST_ID);
+        assertEquals(player, returnedPlayer);
     }
 }

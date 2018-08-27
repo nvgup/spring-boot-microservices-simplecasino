@@ -3,7 +3,6 @@ package com.simplecasino.walletservice;
 import com.simplecasino.walletservice.dto.BalanceResponse;
 import com.simplecasino.walletservice.dto.RegisterPlayerRequest;
 import com.simplecasino.walletservice.dto.UpdateBalanceRequest;
-import com.simplecasino.walletservice.exception.RestApiException;
 import com.simplecasino.walletservice.model.Player;
 import com.simplecasino.walletservice.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -39,20 +36,13 @@ public class WalletController {
     @PutMapping("/player/{id}/balance")
     public BalanceResponse updateBalance(@PathVariable Long id,
                                          @RequestBody UpdateBalanceRequest updateBalanceRequest) {
-        Optional<Player> player = walletService.updateBalance(id, updateBalanceRequest.getBalance());
-
-        return getBalanceResponseFromOptPlayer(player);
+        Player player = walletService.updateBalance(id, updateBalanceRequest.getBalance());
+        return new BalanceResponse(player.getBalance().getAmount());
     }
 
     @GetMapping("/player/{id}/balance")
     public BalanceResponse getBalance(@PathVariable Long id) {
-        Optional<Player> player = walletService.findById(id);
-
-        return getBalanceResponseFromOptPlayer(player);
-    }
-
-    private BalanceResponse getBalanceResponseFromOptPlayer(Optional<Player> player) {
-        return player.map(p -> new BalanceResponse(p.getBalance().getAmount()))
-                .orElseThrow(() -> new RestApiException(RestApiException.Type.PLAYER_NOT_FOUND));
+        Player player = walletService.findById(id);
+        return new BalanceResponse(player.getBalance().getAmount());
     }
 }

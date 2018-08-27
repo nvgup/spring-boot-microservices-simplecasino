@@ -2,7 +2,7 @@ package com.simplecasino.walletservice.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class RestApiException extends RuntimeException {
+public class WalletServiceException extends RuntimeException {
 
     public enum Type {
         PLAYER_ALREADY_EXIST(HttpStatus.CONFLICT, 40901, "Player already registered"),
@@ -34,11 +34,11 @@ public class RestApiException extends RuntimeException {
 
     private Type type;
 
-    public RestApiException(Type type) {
+    public WalletServiceException(Type type) {
         this.type = type;
     }
 
-    public RestApiException(Type type, String message) {
+    public WalletServiceException(Type type, String message) {
         super(message);
         this.type = type;
     }

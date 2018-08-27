@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {RestApiException.class})
-    protected ResponseEntity<?> handleRestApiException(RestApiException ex, WebRequest webRequest) {
+    @ExceptionHandler(value = {WalletServiceException.class})
+    protected ResponseEntity<?> handleRestApiException(WalletServiceException ex, WebRequest webRequest) {
         ApiError apiError = new ApiError(ex.getType());
 
         return handleExceptionInternal(ex, apiError, new HttpHeaders(),

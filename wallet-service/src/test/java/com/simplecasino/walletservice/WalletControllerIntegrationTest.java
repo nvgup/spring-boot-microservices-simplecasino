@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simplecasino.walletservice.dao.WalletDao;
 import com.simplecasino.walletservice.dto.RegisterPlayerRequest;
 import com.simplecasino.walletservice.dto.UpdateBalanceRequest;
-import com.simplecasino.walletservice.exception.RestApiException;
+import com.simplecasino.walletservice.exception.WalletServiceException;
 import com.simplecasino.walletservice.model.Balance;
 import com.simplecasino.walletservice.model.Player;
 import org.junit.After;
@@ -74,8 +74,8 @@ public class WalletControllerIntegrationTest {
                 .andExpect(status().is(HttpStatus.CONFLICT.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(HttpStatus.CONFLICT.value())))
-                .andExpect(jsonPath("$.message", is(RestApiException.Type.PLAYER_ALREADY_EXIST.getMessage())))
-                .andExpect(jsonPath("$.code", is(RestApiException.Type.PLAYER_ALREADY_EXIST.getCode())));
+                .andExpect(jsonPath("$.message", is(WalletServiceException.Type.PLAYER_ALREADY_EXIST.getMessage())))
+                .andExpect(jsonPath("$.code", is(WalletServiceException.Type.PLAYER_ALREADY_EXIST.getCode())));
     }
 
     @Test
@@ -92,8 +92,8 @@ public class WalletControllerIntegrationTest {
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", is(RestApiException.Type.PLAYER_NOT_FOUND.getMessage())))
-                .andExpect(jsonPath("$.code", is(RestApiException.Type.PLAYER_NOT_FOUND.getCode())));
+                .andExpect(jsonPath("$.message", is(WalletServiceException.Type.PLAYER_NOT_FOUND.getMessage())))
+                .andExpect(jsonPath("$.code", is(WalletServiceException.Type.PLAYER_NOT_FOUND.getCode())));
     }
 
     @Test
@@ -169,8 +169,8 @@ public class WalletControllerIntegrationTest {
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(HttpStatus.NOT_FOUND.value())))
-                .andExpect(jsonPath("$.message", is(RestApiException.Type.PLAYER_NOT_FOUND.getMessage())))
-                .andExpect(jsonPath("$.code", is(RestApiException.Type.PLAYER_NOT_FOUND.getCode())));
+                .andExpect(jsonPath("$.message", is(WalletServiceException.Type.PLAYER_NOT_FOUND.getMessage())))
+                .andExpect(jsonPath("$.code", is(WalletServiceException.Type.PLAYER_NOT_FOUND.getCode())));
     }
 
     @After

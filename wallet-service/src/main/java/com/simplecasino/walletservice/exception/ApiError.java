@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 public class ApiError<T> {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
 
     private int status;
@@ -23,12 +22,12 @@ public class ApiError<T> {
 
     }
 
-    public ApiError(RestApiException.Type exType, T additionalInfo) {
+    public ApiError(WalletServiceException.Type exType, T additionalInfo) {
         this(exType.getStatus().value(), exType.getCode(), exType.getMessage());
         this.additionalInfo = additionalInfo;
     }
 
-    public ApiError(RestApiException.Type exType) {
+    public ApiError(WalletServiceException.Type exType) {
         this(exType.getStatus().value(), exType.getCode(), exType.getMessage());
     }
 

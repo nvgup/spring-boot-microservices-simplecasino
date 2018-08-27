@@ -2,7 +2,7 @@ package com.simplecasino.walletservice.exception;
 
 import java.math.BigDecimal;
 
-public class InsufficientBalanceException extends RestApiException {
+public class InsufficientBalanceException extends WalletServiceException {
 
     private BigDecimal balance;
 
